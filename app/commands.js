@@ -1,11 +1,12 @@
 const { Client, MessageEmbed } = require("discord.js");
-
+const { DisTube } = require("@distube/ytdl-core");
 /* JSON */
 const bot = require("./json/me.json");
 const token = require("./json/config.json");
 const license = require("./json/license.json");
 const rolesJson = require("./json/roles.json");
 const programR = require("./json/programmer.json");
+const commands = require("./json/commads.json");
 /* Events */
 const { nowTime } = require("./events/nowTime");
 const { botAge } = require("./events/botAge");
@@ -14,7 +15,9 @@ module.exports.Commands = function () {
   const prefix = "*";
 
   //Get Client
-  const app = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
+  const app = new Client({
+    intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_VOICE_STATES"],
+  });
 
   app.once("ready", () => {
     console.log(`Starting ${app.user.tag}`);
@@ -29,7 +32,11 @@ module.exports.Commands = function () {
     switch (command) {
       case prefix + "hi":
         msg.reply(`Hello! ${msg.author.username}`);
-        console.log(`${msg.author.username} - id: ${msg.author.id} use hi time:${ nowTime()}`);
+        console.log(
+          `${msg.author.username} - id: ${
+            msg.author.id
+          } use hi time:${nowTime()}`
+        );
         break;
 
       case prefix + "me":
@@ -47,7 +54,11 @@ module.exports.Commands = function () {
           .setFooter(`©️ ` + `${bot.footer}`);
 
         msg.reply({ embeds: [embed] });
-        console.log(`${msg.author.username} - id: ${msg.author.id} use me time:${ nowTime()}`);
+        console.log(
+          `${msg.author.username} - id: ${
+            msg.author.id
+          } use me time:${nowTime()}`
+        );
         break;
       case prefix + "linces":
         const linces = new MessageEmbed()
@@ -60,15 +71,27 @@ module.exports.Commands = function () {
           .setTimestamp()
           .setFooter(`©️ ` + `${bot.footer}`);
         msg.reply({ embeds: [linces] });
-        console.log(`${msg.author.username} - id: ${msg.author.id} use linces time:${ nowTime()}`);
+        console.log(
+          `${msg.author.username} - id: ${
+            msg.author.id
+          } use linces time:${nowTime()}`
+        );
         break;
       case prefix + "nowtime":
         msg.reply(`${nowTime()}`);
-        console.log(`${msg.author.username} - id: ${msg.author.id} use nowtime time:${ nowTime()}`);
+        console.log(
+          `${msg.author.username} - id: ${
+            msg.author.id
+          } use nowtime time:${nowTime()}`
+        );
         break;
       case prefix + "botage":
         msg.reply(`${botAge()} old.`);
-        console.log(`${msg.author.username} - id: ${msg.author.id} use botage time:${ nowTime()}`);
+        console.log(
+          `${msg.author.username} - id: ${
+            msg.author.id
+          } use botage time:${nowTime()}`
+        );
         break;
       //case prefix + "birthdaybot":
       // msg.reply(birthdaybot())
@@ -85,7 +108,11 @@ module.exports.Commands = function () {
 
           .setFooter(`©️ ` + `${bot.footer}`);
         msg.reply({ embeds: [roles] });
-        console.log(`${msg.author.username} - id: ${msg.author.id} use youtube/twitch time:${ nowTime()}`);
+        console.log(
+          `${msg.author.username} - id: ${
+            msg.author.id
+          } use youtube/twitch time:${nowTime()}`
+        );
         break;
       case prefix + "programmer":
         const programmer = new MessageEmbed()
@@ -100,14 +127,22 @@ module.exports.Commands = function () {
 
           .setFooter(`©️ ` + `${bot.footer}`);
         msg.reply({ embeds: [programmer] });
-        console.log(`${msg.author.username} - id: ${msg.author.id} use programmer time:${ nowTime()}`);
+        console.log(
+          `${msg.author.username} - id: ${
+            msg.author.id
+          } use programmer time:${nowTime()}`
+        );
         break;
       case prefix + "report":
         msg.reply("Check your DM please");
         msg.author.send(
           "Write to someone on the server about the problem. OR stdimitrov#2755"
         );
-        console.log(`${msg.author.username} - id: ${msg.author.id} use report time:${ nowTime()}`);
+        console.log(
+          `${msg.author.username} - id: ${
+            msg.author.id
+          } use report time:${nowTime()}`
+        );
 
         break;
       case prefix + "delete":
@@ -117,11 +152,31 @@ module.exports.Commands = function () {
           msg.channel.delete();
         } else {
           msg.reply("Nice xD");
-          console.log(`${msg.author.username} - id: ${msg.author.id} time:${ nowTime()}`);
+          console.log(
+            `${msg.author.username} - id: ${msg.author.id} time:${nowTime()}`
+          );
         }
         break;
+      case prefix + "help":
+        const commandList = new MessageEmbed()
+          .setColor("RANDOM")
+          .setTitle(`${commands.titleC}`)
+          .setDescription(commands.commands)
+          .addFields({ name: `${commands.newtitle}`, value: commands.newcom })
+          .setTimestamp()
+          .setFooter(`©️ ` + `${bot.footer}`);
+        msg.reply({ embeds: [commandList] });
+        console.log(
+          `${msg.author.username} - id: ${
+            msg.author.id
+          } use help time:${nowTime()}`
+        );
+        break;
+      case prefix + "beta":
+        msg.author.send("New commands: music* help");
     }
   });
+  
 
   //Use Token
   app.login(token.bot_token);

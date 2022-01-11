@@ -1,3 +1,5 @@
 app/node_modules
 app/json/config.json
 app/process.env
+app/music/config.json
+node_modules
